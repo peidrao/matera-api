@@ -30,6 +30,7 @@ from drf_spectacular.views import (
 api_urlpatterns = [
     path("", include("loans.urls")),
     path("", include("payments.urls")),
+    path("accounts/", include("accounts.urls")),
     path("auth/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("auth/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("schema/", SpectacularAPIView.as_view(), name="schema"),

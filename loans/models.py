@@ -18,6 +18,7 @@ class Loan(models.Model):
     monthly_interest_rate = models.DecimalField(
         max_digits=5, decimal_places=4, default=Decimal("0.0000")
     )
+    is_fully_paid = models.BooleanField(default=False)
 
     ip_address = models.GenericIPAddressField()
 

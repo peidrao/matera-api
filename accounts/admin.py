@@ -8,12 +8,12 @@ class UserAdmin(BaseUserAdmin):
     list_display = (
         "username",
         "email",
-        "document_number",
+        "document",
         "is_staff",
         "is_active",
     )
-    search_fields = ("username", "email", "document_number")
+    search_fields = ("username", "email", "document")
     list_filter = ("is_staff", "is_superuser", "is_active")
     fieldsets = BaseUserAdmin.fieldsets + (
-        ("Informações adicionais", {"fields": ("document_number",)}),
+        ("Informações adicionais", {"fields": ("document",)}),
     )

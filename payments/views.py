@@ -26,5 +26,19 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 {"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN
             )
 
-        self.perform_create(serializer)
+        payment = serializer.save()
+
+        if loan.is_fully_paid:
+            return Response(
+                {"detail": "Este empréstimo já foi quitado."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        total_paid = loan.total_paid
+        total_due = loan.outstanding_balance + total_paid
+
+        if total_paid >= total_due:
+            loan.is_fully_paid = True
+            loan.save(update_fields=["is_fully_paid"])
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)

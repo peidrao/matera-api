@@ -16,14 +16,13 @@ class Command(BaseCommand):
     help = "Cria usuários, empréstimos e pagamentos fake para testes"
 
     def handle(self, *args, **kwargs):
-        user = User.objects.create_user(
-            username="admin",
+        user = User.objects.create(
             email="admin@admin.com",
             password="12345678",
             document="12345678909",
         )
 
-        self.stdout.write(self.style.SUCCESS(f"Usuário criado: {user.username}"))
+        self.stdout.write(self.style.SUCCESS(f"Usuário criado: {user.email}"))
 
         for _ in range(random.randint(10, 20)):
             requested_date = make_aware(fake.date_time_this_year())

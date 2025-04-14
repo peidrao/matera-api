@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     "django_filters",
     "corsheaders",
     "loans",
+    "accounts",
+    "payments","
 ]
 
 MIDDLEWARE = [
@@ -58,6 +60,8 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTH_USER_MODEL = "accounts.User"
 
 CORS_ALLOWED_ORIGINS = ["*"]
 CORS_ALLOW_ALL_ORIGINS = True

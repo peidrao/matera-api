@@ -3,6 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
+    username = None
     email = models.EmailField(unique=True)
     document = models.CharField(
         max_length=20,

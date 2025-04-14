@@ -35,5 +35,19 @@ class Loan(models.Model):
 
     @property
     def total_paid(self):
-        """Soma de todos os pagamentos recebidos."""
-        return sum(payment.amount for payment in self.payments.all())
+        return self.payments.aggregate(total=models.Sum("amount"))["total"] or Decimal(
+            "0.00"
+        )
+
+    @property
+    def outstanding_balance(self):
+        """Calcula saldo devedor com juros simples."""
+        months_elapsed = (timezone.now().year - self.requested_date.year) * 12 + (
+            timezone.now().month - self.requested_date.month
+        )
+
+        interest = (
+            self.principal_amount * Decimal(self.monthly_interest_rate) * months_elapsed
+        )
+        total_due = self.principal_amount + interest
+        return total_due - self.total_paid

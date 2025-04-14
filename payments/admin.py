@@ -11,6 +11,6 @@ class PaymentAdmin(admin.ModelAdmin):
         "payment_date",
         "created_at",
     )
-    search_fields = ("loan__client", "loan__bank", "loan__user__username")
+    search_fields = ("loan__client", "loan__bank", "loan__user__email")
     list_filter = ("payment_date",)
     readonly_fields = ("created_at",)

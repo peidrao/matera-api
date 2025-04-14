@@ -6,13 +6,12 @@ from accounts.models import User
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     list_display = (
-        "username",
         "email",
         "document",
         "is_staff",
         "is_active",
     )
-    search_fields = ("username", "email", "document")
+    search_fields = ("email", "document")
     list_filter = ("is_staff", "is_superuser", "is_active")
     fieldsets = BaseUserAdmin.fieldsets + (
         ("Informações adicionais", {"fields": ("document",)}),

@@ -4,10 +4,10 @@ from loans.models import Loan
 
 class LoanSerializer(serializers.ModelSerializer):
     outstanding_balance = serializers.DecimalField(
-        source="outstanding_balance", max_digits=12, decimal_places=2, read_only=True
+        max_digits=12, decimal_places=2, read_only=True
     )
     total_paid = serializers.DecimalField(
-        source="total_paid", max_digits=12, decimal_places=2, read_only=True
+        max_digits=12, decimal_places=2, read_only=True
     )
 
     class Meta:

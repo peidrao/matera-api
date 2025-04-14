@@ -13,7 +13,7 @@ class LoanAdmin(admin.ModelAdmin):
         "monthly_interest_rate",
         "requested_date",
     )
-    search_fields = ("client", "bank", "user__username")
+    search_fields = ("client", "bank", "user__email")
     list_filter = ("bank", "requested_date")
     readonly_fields = (
         "created_at",

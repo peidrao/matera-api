@@ -16,10 +16,29 @@ Including another URLconf
 """
 
 from django.urls import path, include
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
 
 api_urlpatterns = [
     path("loans/", include("loans.urls")),
     path("payments/", include("payments.urls")),
+    path("auth/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("auth/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "docs/swagger/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path("docs/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
 ]
 
 urlpatterns = [

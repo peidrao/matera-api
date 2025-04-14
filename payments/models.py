@@ -1,3 +1,5 @@
+import uuid
+
 from decimal import Decimal
 from django.db import models
 from django.utils import timezone
@@ -6,6 +8,8 @@ from loans.models import Loan
 
 
 class Payment(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
     loan = models.ForeignKey(Loan, on_delete=models.PROTECT, related_name="payments")
     payment_date = models.DateTimeField(default=timezone.now)
     amount = models.DecimalField(

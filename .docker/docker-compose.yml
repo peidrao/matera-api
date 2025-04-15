@@ -1,0 +1,33 @@
+
+services:
+  db:
+    image: postgres:15
+    container_name: matera_db
+    environment:
+      POSTGRES_DB: matera
+      POSTGRES_USER: matera
+      POSTGRES_PASSWORD: matera123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build:
+      context: ..
+      dockerfile: .docker/Dockerfile
+    container_name: matera_web
+    entrypoint: [".docker/entrypoint.sh"]
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DJANGO_SETTINGS_MODULE: core.settings
+      DATABASE_URL: postgres://matera:matera123@db:5432/matera
+    volumes:
+      - ..:/app
+
+volumes:
+  postgres_data:

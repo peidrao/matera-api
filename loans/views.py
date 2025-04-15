@@ -1,6 +1,9 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from django.db import transaction
+
+from audits.enums import LoanActionEnum
+from audits.services import log_loan_action
 from .models import Loan
 from .serializers import LoanSerializer
 
@@ -19,4 +22,16 @@ class LoanViewSet(viewsets.ModelViewSet):
     @transaction.atomic
     def perform_create(self, serializer):
         ip = self.request.META.get("REMOTE_ADDR", "127.0.0.1")
-        serializer.save(user=self.request.user, ip_address=ip)
+        loan = serializer.save(user=self.request.user, ip_address=ip)
+
+        log_loan_action(
+            loan=loan,
+            action=LoanActionEnum.CREATED,
+            user=self.request.user,
+            ip_address=ip,
+            metadata={
+                "principal_amount": str(loan.principal_amount),
+                "interest": str(loan.monthly_interest_rate),
+                "bank": loan.bank,
+            },
+        )

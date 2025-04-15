@@ -47,7 +47,10 @@ class LoanViewSetTestCase(TestCase):
         response = self.client.get(reverse("loans-list"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["results"]), 1)
-        self.assertEqual(response.data["results"][0]["principal_amount"], "1000.00")
+        self.assertEqual(
+            response.data["results"][0]["principal_amount"],
+            "1000.00",
+        )
 
     def test_create_loan_successfully(self):
         data = {
@@ -58,6 +61,7 @@ class LoanViewSetTestCase(TestCase):
         }
         response = self.client.post(reverse("loans-list"), data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
         self.assertEqual(response.data["principal_amount"], "1500.00")
         self.assertEqual(response.data["bank"], "Banco C")
 
@@ -73,7 +77,9 @@ class LoanViewSetTestCase(TestCase):
             "bank": "Banco D",
             "client": "Cliente D",
         }
+
         response = self.client.post(reverse("loans-list"), data=data)
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         loan = Loan.objects.get(id=response.data["id"])
         self.assertEqual(loan.user, self.user)

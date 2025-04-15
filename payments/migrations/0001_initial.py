@@ -8,25 +8,47 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('loans', '0001_initial'),
+        ("loans", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Payment',
+            name="Payment",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('payment_date', models.DateTimeField(default=django.utils.timezone.now)),
-                ('amount', models.DecimalField(decimal_places=2, default=Decimal('0.00'), max_digits=12)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('loan', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='payments', to='loans.loan')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "payment_date",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
+                (
+                    "amount",
+                    models.DecimalField(
+                        decimal_places=2, default=Decimal("0.00"), max_digits=12
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "loan",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="payments",
+                        to="loans.loan",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
         ),
     ]

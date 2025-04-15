@@ -1,4 +1,3 @@
-
 services:
   db:
     image: postgres:15
@@ -14,7 +13,7 @@ services:
 
   web:
     build:
-      context: ..
+      context: .
       dockerfile: .docker/Dockerfile
     container_name: matera_web
     entrypoint: [".docker/entrypoint.sh"]
@@ -27,7 +26,7 @@ services:
       DJANGO_SETTINGS_MODULE: core.settings
       DATABASE_URL: postgres://matera:matera123@db:5432/matera
     volumes:
-      - ..:/app
+      - .:/app
 
 volumes:
   postgres_data:

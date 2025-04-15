@@ -1,10 +1,11 @@
 import datetime
 from decimal import Decimal
+
 from django.test import TestCase
 from django.urls import reverse
 from django.utils.timezone import make_aware
-from rest_framework.test import APIClient
 from rest_framework import status
+from rest_framework.test import APIClient
 
 from accounts.models import User
 from loans.models import Loan

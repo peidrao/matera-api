@@ -1,9 +1,10 @@
+from django.db import transaction
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from django.db import transaction
 
 from audits.enums import LoanActionEnum
 from audits.services import log_loan_action
+
 from .models import Loan
 from .serializers import LoanSerializer
 

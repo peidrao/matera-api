@@ -1,8 +1,10 @@
-from decimal import Decimal, ROUND_HALF_UP
-from functools import cached_property
 import uuid
+from decimal import ROUND_HALF_UP, Decimal
+from functools import cached_property
+
 from django.db import models
 from django.utils.timezone import now
+
 from accounts.models import User
 
 

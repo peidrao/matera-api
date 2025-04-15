@@ -1,13 +1,13 @@
 import random
 from decimal import Decimal
-from django.utils.timezone import make_aware
 
 from django.core.management.base import BaseCommand
+from django.utils.timezone import make_aware
 from faker import Faker
+
 from accounts.models import User
 from loans.models import Loan
 from payments.models import Payment
-
 
 fake = Faker("pt_BR")
 

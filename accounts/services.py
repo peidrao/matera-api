@@ -1,7 +1,9 @@
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
+
+from django.db.models import Sum
+
 from loans.models import Loan
 from payments.models import Payment
-from django.db.models import Sum
 
 
 def quantize_2(value):

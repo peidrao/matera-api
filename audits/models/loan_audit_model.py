@@ -1,5 +1,7 @@
 import uuid
+
 from django.db import models
+
 from accounts.models import User
 from audits.enums.loan_audit_enum import LoanActionEnum
 from loans.models import Loan

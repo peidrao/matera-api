@@ -10,9 +10,6 @@ class MeView(APIView):
 
     def get(self, request):
         data = get_user_me(request.user)
-        import pdb
-
-        # pdb.set_trace()
         serializer = MeSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data)

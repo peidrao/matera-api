@@ -1,5 +1,6 @@
 from decimal import Decimal, ROUND_HALF_UP
 from functools import cached_property
+import uuid
 from django.db import models
 from django.utils.timezone import now
 from accounts.models import User
@@ -15,6 +16,8 @@ class Loan(models.Model):
     - Seguro baseado em percentual
     - Saldo devedor dinâmico
     """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     user = models.ForeignKey(
         User,

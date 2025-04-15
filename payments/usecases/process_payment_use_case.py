@@ -9,10 +9,11 @@ from loans.models import Loan
 
 
 class ProcessPaymentUseCase:
-    def __init__(self, *, loan: Loan, user, amount: Decimal):
+    def __init__(self, *, loan: Loan, user, amount: Decimal, ip_address=None):
         self.loan = loan
         self.user = user
         self.amount = amount
+        self.ip_address = ip_address
 
     def handle(self) -> Payment:
         self._validate()

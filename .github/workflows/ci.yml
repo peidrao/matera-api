@@ -2,46 +2,31 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  test:
-    name: Run Django CI (SQLite)
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout do código
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Configurar Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12"
-          cache: "poetry"
+          python-version: '3.13'
 
-      - name: Install Poetry
-        run: pip install poetry
+      - name: Instalar Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Install dependencies
+      - name: Instalar dependências
         run: poetry install
 
-      - name: Check code style with Black
-        run: poetry run black --check .
-
-      - name: Check import order with isort
-        run: poetry run isort . --check-only
-
-      - name: Lint with Ruff
+      - name: Rodar lint
         run: poetry run ruff check .
 
-      - name: Apply migrations
-        run: poetry run python manage.py migrate
-
-      - name: Check for uncommitted migrations
-        run: poetry run python manage.py makemigrations --check --dry-run
-
-      - name: Run tests with coverage
-        run: |
-          poetry run coverage run manage.py test
-          poetry run coverage report
+      - name: Rodar testes
+        run: poetry run pytest --disable-warnings

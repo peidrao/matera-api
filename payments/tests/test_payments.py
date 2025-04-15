@@ -60,7 +60,12 @@ class PaymentViewSetTestCase(TestCase):
             reverse("payments-list"),
             {"loan": str(self.other_loan.id), "amount": "300.00"},
         )
+
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(
+            response.data["detail"],
+            "Você não tem permissão para pagar este empréstimo.",
+        )
         self.assertEqual(Payment.objects.count(), 0)
 
     def test_create_loan_and_fully_pay_it(self):

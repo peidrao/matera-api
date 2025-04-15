@@ -16,7 +16,7 @@ class Command(BaseCommand):
     help = "Cria usuários, empréstimos e pagamentos fake para testes"
 
     def handle(self, *args, **kwargs):
-        user = User.objects.create(
+        user = User.objects.create_user(
             email="admin@admin.com",
             password="12345678",
             document="12345678909",

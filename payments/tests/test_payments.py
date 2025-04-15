@@ -117,8 +117,9 @@ class PaymentViewSetTestCase(TestCase):
         Payment.objects.create(loan=self.other_loan, amount=Decimal("500.00"))
 
         response = self.client.get(reverse("payments-list"))
-        self.assertEqual(len(response.data["results"]), 1)
-        self.assertEqual(response.data["results"][0]["amount"], "500.00")
+
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["amount"], "500.00")
 
     def test_cannot_pay_more_than_total_due(self):
         total_due = self.loan.total_due

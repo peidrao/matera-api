@@ -2,6 +2,8 @@ from decimal import Decimal
 from django.db import transaction
 from django.db.models import Sum
 from rest_framework.exceptions import ValidationError, PermissionDenied
+from audits.enums import LoanActionEnum
+from audits.services import log_loan_action
 from payments.models import Payment
 from loans.models import Loan
 
@@ -29,9 +31,32 @@ class ProcessPaymentUseCase:
 
             payment = Payment.objects.create(loan=loan, amount=self.amount)
 
+            log_loan_action(
+                loan=loan,
+                action=LoanActionEnum.PAYMENT,
+                user=self.user,
+                ip_address=self.ip_address,
+                metadata={
+                    "amount": str(self.amount),
+                    "total_paid_before": str(total_paid),
+                    "total_due": str(total_due),
+                },
+            )
+
             if total_paid + self.amount >= total_due:
                 loan.is_fully_paid = True
                 loan.save(update_fields=["is_fully_paid"])
+
+                log_loan_action(
+                    loan=loan,
+                    action=LoanActionEnum.CLOSED,
+                    user=self.user,
+                    ip_address=self.ip_address,
+                    metadata={
+                        "reason": "Empréstimo totalmente quitado",
+                        "total_paid": str(total_paid + self.amount),
+                    },
+                )
 
             return payment
 

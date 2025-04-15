@@ -28,5 +28,8 @@ jobs:
       - name: Rodar lint
         run: poetry run ruff check .
 
+      - name: Rodar isort
+        run: poetry run isort . --check --diff
+
       - name: Rodar testes
         run: poetry run python manage.py test

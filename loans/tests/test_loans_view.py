@@ -48,9 +48,9 @@ class LoanViewSetTestCase(TestCase):
     def test_authenticated_user_can_list_only_own_loans(self):
         response = self.client.get(reverse("loans-list"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data["results"]), 1)
         self.assertEqual(
-            response.data[0]["principal_amount"],
+            response.data["results"][0]["principal_amount"],
             "1000.00",
         )
 

@@ -11,6 +11,7 @@ from .serializers import LoanSerializer
 class LoanViewSet(viewsets.ModelViewSet):
     serializer_class = LoanSerializer
     permission_classes = [IsAuthenticated]
+    ordering = ["-created_at"]
 
     def get_queryset(self):
         return (

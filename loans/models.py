@@ -16,7 +16,11 @@ class Loan(models.Model):
     - Saldo devedor dinâmico
     """
 
-    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="loans")
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name="loans",
+    )
     principal_amount = models.DecimalField(
         max_digits=12, decimal_places=2, default=Decimal("0.00")
     )
@@ -24,7 +28,7 @@ class Loan(models.Model):
         max_digits=5, decimal_places=4, default=Decimal("0.0000")
     )
     ip_address = models.GenericIPAddressField()
-    requested_date = models.DateTimeField()
+    requested_date = models.DateTimeField(auto_now_add=True)
     bank = models.CharField(max_length=255)
     client = models.CharField(max_length=255)
     is_fully_paid = models.BooleanField(default=False)

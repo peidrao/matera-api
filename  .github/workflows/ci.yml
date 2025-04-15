@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    name: Run Django Matera 
+    name: Run Django CI (SQLite)
     runs-on: ubuntu-latest
 
     steps:

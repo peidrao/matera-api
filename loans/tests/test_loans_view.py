@@ -7,6 +7,8 @@ from rest_framework.test import APIClient
 from rest_framework import status
 
 from accounts.models import User
+from audits.enums.loan_audit_enum import LoanActionEnum
+from audits.models.loan_audit_model import LoanAuditLog
 from loans.models import Loan
 
 
@@ -65,6 +67,15 @@ class LoanViewSetTestCase(TestCase):
         self.assertEqual(response.data["principal_amount"], "1500.00")
         self.assertEqual(response.data["bank"], "Banco C")
 
+        loan_id = response.data["id"]
+        logs = LoanAuditLog.objects.filter(
+            loan__id=loan_id, action=LoanActionEnum.CREATED
+        )
+
+        self.assertEqual(logs.count(), 1)
+        self.assertEqual(logs.first().performed_by, self.user)
+        self.assertIn("principal_amount", logs.first().metadata)
+
     def test_unauthenticated_user_cannot_access(self):
         self.client.logout()
         response = self.client.get(reverse("loans-list"))
@@ -84,3 +95,10 @@ class LoanViewSetTestCase(TestCase):
         loan = Loan.objects.get(id=response.data["id"])
         self.assertEqual(loan.user, self.user)
         self.assertEqual(loan.ip_address, "127.0.0.1")
+
+        log = LoanAuditLog.objects.filter(
+            loan=loan, action=LoanActionEnum.CREATED
+        ).first()
+        self.assertIsNotNone(log)
+        self.assertEqual(log.performed_by, self.user)
+        self.assertEqual(log.ip_address, "127.0.0.1")

@@ -23,10 +23,10 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Instalar dependências
-        run: poetry install
+        run: poetry install --no-root
 
       - name: Rodar lint
         run: poetry run ruff check .
 
       - name: Rodar testes
-        run: poetry run pytest --disable-warnings
+        run: poetry run python manage.py test

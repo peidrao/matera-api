@@ -10,7 +10,11 @@ class LoanViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Loan.objects.filter(user=self.request.user).select_related("user")
+        return (
+            Loan.objects.filter(user=self.request.user)
+            .select_related("user")
+            .order_by("-created_at")
+        )
 
     @transaction.atomic
     def perform_create(self, serializer):

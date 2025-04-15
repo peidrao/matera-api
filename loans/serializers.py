@@ -5,6 +5,10 @@ from loans.models import Loan
 class LoanSerializer(serializers.ModelSerializer):
     outstanding_balance = serializers.SerializerMethodField()
     total_paid = serializers.SerializerMethodField()
+    compounded_amount = serializers.SerializerMethodField()
+    iof = serializers.SerializerMethodField()
+    insurance = serializers.SerializerMethodField()
+    total_due = serializers.SerializerMethodField()
 
     class Meta:
         model = Loan
@@ -18,6 +22,10 @@ class LoanSerializer(serializers.ModelSerializer):
             "client",
             "outstanding_balance",
             "total_paid",
+            "compounded_amount",
+            "iof",
+            "insurance",
+            "total_due",
             "created_at",
             "updated_at",
         ]
@@ -27,6 +35,10 @@ class LoanSerializer(serializers.ModelSerializer):
             "ip_address",
             "outstanding_balance",
             "total_paid",
+            "compounded_amount",
+            "iof",
+            "insurance",
+            "total_due",
             "created_at",
             "updated_at",
         ]
@@ -36,3 +48,15 @@ class LoanSerializer(serializers.ModelSerializer):
 
     def get_total_paid(self, obj):
         return round(obj.total_paid, 2)
+
+    def get_compounded_amount(self, obj):
+        return round(obj.compounded_amount, 2)
+
+    def get_iof(self, obj):
+        return round(obj.iof, 2)
+
+    def get_insurance(self, obj):
+        return round(obj.insurance, 2)
+
+    def get_total_due(self, obj):
+        return round(obj.total_due, 2)

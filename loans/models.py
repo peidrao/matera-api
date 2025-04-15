@@ -20,6 +20,7 @@ class Loan(models.Model):
         User,
         on_delete=models.PROTECT,
         related_name="loans",
+        db_index=True,
     )
     principal_amount = models.DecimalField(
         max_digits=12, decimal_places=2, default=Decimal("0.00")
@@ -40,6 +41,9 @@ class Loan(models.Model):
 
     def __str__(self):
         return f"Loan {self.id}"
+
+    class Meta:
+        ordering = ["-created_at"]
 
     @cached_property
     def total_paid(self):

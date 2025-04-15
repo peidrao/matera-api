@@ -15,10 +15,10 @@ class PaymentViewSetTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-        self.user = User.objects.create(
+        self.user = User.objects.create_user(
             email="user@test.com", password="12345678", document="11111111111"
         )
-        self.other_user = User.objects.create(
+        self.other_user = User.objects.create_user(
             email="other@test.com", password="12345678", document="22222222222"
         )
 

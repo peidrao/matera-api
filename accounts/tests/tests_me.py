@@ -15,7 +15,7 @@ class MeEndpointTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-        self.user = User.objects.create(
+        self.user = User.objects.create_user(
             email="user@test.com", password="12345678", document="12345678900"
         )
         self.client.force_authenticate(user=self.user)

@@ -3,12 +3,8 @@ from loans.models import Loan
 
 
 class LoanSerializer(serializers.ModelSerializer):
-    outstanding_balance = serializers.DecimalField(
-        max_digits=12, decimal_places=2, read_only=True
-    )
-    total_paid = serializers.DecimalField(
-        max_digits=12, decimal_places=2, read_only=True
-    )
+    outstanding_balance = serializers.SerializerMethodField()
+    total_paid = serializers.SerializerMethodField()
 
     class Meta:
         model = Loan
@@ -34,3 +30,9 @@ class LoanSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
+
+    def get_outstanding_balance(self, obj):
+        return round(obj.outstanding_balance, 2)
+
+    def get_total_paid(self, obj):
+        return round(obj.total_paid, 2)

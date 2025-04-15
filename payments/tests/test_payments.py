@@ -63,17 +63,35 @@ class PaymentViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(Payment.objects.count(), 0)
 
-    def test_payment_marks_loan_as_fully_paid(self):
-        Payment.objects.create(loan=self.loan, amount=Decimal("900.00"))
-        self.client.post(
-            reverse("payments-list"),
+    def test_create_loan_and_fully_pay_it(self):
+        loan_response = self.client.post(
+            reverse("loans-list"),
             {
-                "loan": str(self.loan.id),
-                "amount": "200.00",
+                "principal_amount": "1000.00",
+                "monthly_interest_rate": "0.02",
+                "bank": "Banco Teste",
+                "client": "Cliente Teste",
             },
         )
-        self.loan.refresh_from_db()
-        self.assertTrue(self.loan.is_fully_paid)
+
+        self.assertEqual(loan_response.status_code, status.HTTP_201_CREATED)
+        loan_id = loan_response.data["id"]
+
+        loan = Loan.objects.get(id=loan_id)
+        total_due = loan.total_due.quantize(Decimal("0.01"))
+
+        payment_response = self.client.post(
+            reverse("payments-list"),
+            {
+                "loan": str(loan.id),
+                "amount": str(total_due),
+            },
+        )
+
+        self.assertEqual(payment_response.status_code, status.HTTP_201_CREATED)
+
+        loan.refresh_from_db()
+        self.assertTrue(loan.is_fully_paid)
 
     def test_payment_fails_if_loan_is_already_paid(self):
         self.loan.is_fully_paid = True
@@ -95,3 +113,63 @@ class PaymentViewSetTestCase(TestCase):
         response = self.client.get(reverse("payments-list"))
         self.assertEqual(len(response.data["results"]), 1)
         self.assertEqual(response.data["results"][0]["amount"], "500.00")
+
+    def test_cannot_pay_more_than_total_due(self):
+        loan = self.loan
+        total_due = loan.total_due
+        Payment.objects.create(loan=loan, amount=total_due - Decimal("10.00"))
+
+        response = self.client.post(
+            reverse("payments-list"),
+            {
+                "loan": str(loan.id),
+                "amount": "20.00",
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("detail", response.data)
+
+    def test_multiple_partial_payments_should_fully_pay_loan(self):
+        self.loan.refresh_from_db()
+        total_due = self.loan.total_due
+        part = (total_due / 3).quantize(Decimal("0.01"))
+
+        for _ in range(2):
+            response = self.client.post(
+                reverse("payments-list"),
+                {"loan": str(self.loan.id), "amount": str(part)},
+            )
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        paid = part * 2
+        remaining = (total_due - paid).quantize(Decimal("0.01"))
+
+        response = self.client.post(
+            reverse("payments-list"),
+            {"loan": str(self.loan.id), "amount": str(remaining)},
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        self.loan.refresh_from_db()
+        self.assertTrue(self.loan.is_fully_paid)
+
+    def test_simulated_concurrent_payments_should_not_exceed_total_due(self):
+        self.loan.refresh_from_db()
+        total_due = self.loan.total_due
+        half = (total_due / 2).quantize(Decimal("0.01"))
+
+        response_1 = self.client.post(
+            reverse("payments-list"),
+            {"loan": str(self.loan.id), "amount": str(half)},
+        )
+
+        response_2 = self.client.post(
+            reverse("payments-list"),
+            {
+                "loan": str(self.loan.id),
+                "amount": str(half + Decimal("0.01")),
+            },
+        )
+
+        self.assertEqual(response_1.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response_2.status_code, status.HTTP_400_BAD_REQUEST)

@@ -1,4 +1,5 @@
 from django.db import transaction
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -12,6 +13,9 @@ class PaymentViewSet(viewsets.ModelViewSet):
     serializer_class = PaymentSerializer
     permission_classes = [IsAuthenticated]
     ordering = ["-created_at"]
+
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["loan", "payment_date", "amount"]
 
     def get_queryset(self):
         return Payment.objects.filter(loan__user=self.request.user).select_related(

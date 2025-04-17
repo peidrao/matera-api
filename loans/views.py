@@ -1,4 +1,5 @@
 from django.db import transaction
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
@@ -12,6 +13,8 @@ from .serializers import LoanSerializer
 class LoanViewSet(viewsets.ModelViewSet):
     serializer_class = LoanSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["bank", "client", "is_fully_paid", "requested_date"]
     ordering = ["-created_at"]
 
     def get_queryset(self):

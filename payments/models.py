@@ -1,10 +1,9 @@
 import uuid
 from decimal import Decimal
 
-from simple_history.models import HistoricalRecords
-
 from django.db import models
 from django.utils import timezone
+from simple_history.models import HistoricalRecords
 
 from loans.models import Loan
 

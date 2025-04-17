@@ -2,19 +2,22 @@
 
 Este projeto é uma API robusta construída com Django 5.2 e Django REST Framework para o gerenciamento de empréstimos e pagamentos. A ideia é oferecer uma solução simples, segura e performática para aplicações financeiras que lidam com dados sensíveis e transações monetárias.
 
+Além disso, houve forte preocupação com atomicidade nas transações, garantindo que operações críticas, como pagamentos, ocorram de forma segura e completa ou não ocorram. Também foi implementado um sistema de auditoria com histórico detalhado, permitindo rastrear alterações em registros sensíveis de forma confiável.
+
 ---
 
 ## 🚀 Funcionalidades
 
 - Autenticação com JWT (`rest_framework_simplejwt`)
+- Histórico de alterações com `django-simple-history`
+- Filtros com `django-filters`
+- Documentação com `drf-spectacular`
 - CRUD de empréstimos (loans)
 - CRUD de pagamentos (payments)
 - Sistema de logs de ações em auditoria (audits)
 - Validações completas para pagamentos (limite, permissão, duplicidade)
 - Pagamentos são transacionais com `transaction.atomic()`
 - Throttling para evitar abusos na API
-- Filtros com `django-filters`
-- Documentação com `drf-spectacular`
 - Integração com `coverage` para acompanhar a cobertura dos testes de forma precisa
 - CI com GitHub Actions (lint, format, test)
 
@@ -58,7 +61,6 @@ Após subir o projeto, o banco já estará populado com dados fake:
 - Diversos empréstimos e pagamentos aleatórios gerados com Faker
 
 ---
-
 
 ## 📊 CI/CD
 
@@ -105,7 +107,6 @@ Documentação automática gerada com `drf-spectacular`, disponível em:
 
 ---
 
-
 ## 🚀 Visualizar cobertura de testes com `coverage`
 
 ```bash
@@ -121,6 +122,8 @@ coverage html
 
 Depois abra `htmlcov/index.html` no seu navegador.
 
+---
 
 ## ⚠️ Observabilidade
 Inicialmente, foi feita uma tentativa de integrar o OpenTelemetry com o Django, visando capturar métricas, traces e logs de forma padronizada. Porém, enfrentei dificuldades técnicas com a instrumentação automática e compatibilidade com algumas dependências do projeto.
+

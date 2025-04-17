@@ -1,10 +1,10 @@
 import uuid
-
 from decimal import ROUND_HALF_UP, Decimal
 from functools import cached_property
-from simple_history.models import HistoricalRecords
+
 from django.db import models
 from django.utils.timezone import now
+from simple_history.models import HistoricalRecords
 
 from accounts.models import User
 

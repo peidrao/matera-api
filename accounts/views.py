@@ -1,11 +1,10 @@
 from drf_spectacular.utils import extend_schema
+from rest_framework import status, views
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import views, status
-
-from .usescases.get_account_use_case import GetAccountMeUseCase
 
 from .serializers import MeSerializer, RegisterSerializer
+from .usescases.get_account_use_case import GetAccountMeUseCase
 
 
 class RegisterView(views.APIView):

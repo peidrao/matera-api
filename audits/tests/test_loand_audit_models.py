@@ -1,11 +1,12 @@
-from django.test import TestCase
 from decimal import Decimal
 from uuid import UUID
 
+from django.test import TestCase
+
 from accounts.models import User
-from loans.models import Loan
-from audits.models import LoanAuditLog
 from audits.enums.loan_audit_enum import LoanActionEnum
+from audits.models import LoanAuditLog
+from loans.models import Loan
 
 
 class LoanAuditLogModelTest(TestCase):

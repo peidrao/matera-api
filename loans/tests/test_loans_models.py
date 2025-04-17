@@ -1,5 +1,5 @@
-from decimal import ROUND_HALF_UP, Decimal
 from datetime import timedelta
+from decimal import ROUND_HALF_UP, Decimal
 
 from django.test import TestCase
 from django.utils.timezone import now

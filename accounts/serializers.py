@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from .models import User
+
 
 class UserMeSerializer(serializers.Serializer):
     id = serializers.IntegerField()
@@ -29,10 +31,6 @@ class LoanSummarySerializer(serializers.Serializer):
 class MeSerializer(serializers.Serializer):
     user = UserMeSerializer()
     loans = LoanSummarySerializer()
-
-
-from rest_framework import serializers
-from accounts.models import User
 
 
 class RegisterSerializer(serializers.Serializer):

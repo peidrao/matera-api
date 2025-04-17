@@ -1,9 +1,10 @@
 from decimal import Decimal
+
 from django.test import TestCase
 
+from accounts.models import User
 from loans.models import Loan
 from payments.models import Payment
-from accounts.models import User
 
 
 class PaymentModelTest(TestCase):

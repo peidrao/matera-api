@@ -1,10 +1,11 @@
 from decimal import Decimal
+
 from django.test import TestCase
 
 from accounts.models import User
+from accounts.usescases.get_account_use_case import GetAccountMeUseCase
 from loans.models import Loan
 from payments.models import Payment
-from accounts.usescases.get_account_use_case import GetAccountMeUseCase
 
 
 class GetAccountMeUseCaseTest(TestCase):

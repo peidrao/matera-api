@@ -31,5 +31,7 @@ jobs:
       - name: Rodar isort
         run: poetry run isort . --check --diff
 
-      - name: Rodar testes
-        run: poetry run python manage.py test
+      - name: Rodar testes com coverage
+        run: |
+          poetry run coverage run manage.py test
+          poetry run coverage report --fail-under=90

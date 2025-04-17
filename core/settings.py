@@ -22,23 +22,32 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+DEFAULT_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
-    "django_filters",
-    "corsheaders",
-    "drf_spectacular",
-    "django_extensions",
-    "loans",
-    "accounts",
-    "payments",
-    "audits",
 ]
+
+THIRD_PARTY_APPS = [
+    "corsheaders",
+    "django_filters",
+    "django_extensions",
+    "drf_spectacular",
+    "rest_framework",
+    "rest_framework_simplejwt",
+]
+
+LOCAL_APPS = [
+    "accounts",
+    "audits",
+    "loans",
+    "payments",
+]
+
+INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -76,9 +85,11 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "ROTATE_REFRESH_TOKENS": True,
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(hours=3),
+    "ROTATE_REFRESH_TOKENS": False,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
     "BLACKLIST_AFTER_ROTATION": True,
 }
 

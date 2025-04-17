@@ -17,9 +17,15 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         user = User.objects.create_user(
-            email="admin@admin.com",
+            email="admin@matera.com",
             password="12345678",
             document="12345678909",
+        )
+
+        User.objects.create_user(
+            email="other@matera.com",
+            password="12345678",
+            document="12345678910",
         )
 
         self.stdout.write(self.style.SUCCESS(f"Usuário criado: {user.email}"))

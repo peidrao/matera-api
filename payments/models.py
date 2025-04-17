@@ -1,6 +1,8 @@
 import uuid
 from decimal import Decimal
 
+from simple_history.models import HistoricalRecords
+
 from django.db import models
 from django.utils import timezone
 
@@ -19,6 +21,8 @@ class Payment(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    history = HistoricalRecords()
 
     class Meta:
         ordering = ["-created_at"]

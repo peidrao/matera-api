@@ -122,7 +122,5 @@ coverage html
 Depois abra `htmlcov/index.html` no seu navegador.
 
 
-
-
 ## ⚠️ Observabilidade
 Inicialmente, foi feita uma tentativa de integrar o OpenTelemetry com o Django, visando capturar métricas, traces e logs de forma padronizada. Porém, enfrentei dificuldades técnicas com a instrumentação automática e compatibilidade com algumas dependências do projeto.

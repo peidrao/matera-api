@@ -1,10 +1,12 @@
 from django.contrib import admin
-
+from simple_history.admin import (
+    SimpleHistoryAdmin,
+)
 from loans.models import Loan
 
 
 @admin.register(Loan)
-class LoanAdmin(admin.ModelAdmin):
+class LoanAdmin(SimpleHistoryAdmin):
     list_display = (
         "id",
         "user",

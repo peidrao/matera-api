@@ -1,10 +1,13 @@
 from django.contrib import admin
+from simple_history.admin import (
+    SimpleHistoryAdmin,
+)
 
 from payments.models import Payment
 
 
 @admin.register(Payment)
-class PaymentAdmin(admin.ModelAdmin):
+class PaymentAdmin(SimpleHistoryAdmin):
     list_display = (
         "id",
         "loan",

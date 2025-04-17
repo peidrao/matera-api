@@ -15,6 +15,10 @@ class LoanViewSet(viewsets.ModelViewSet):
     ordering = ["-created_at"]
 
     def get_queryset(self):
+        """
+        Filtra os empréstimos para retornar apenas os que pertencem ao usuário
+        autenticado.
+        """
         return (
             Loan.objects.filter(user=self.request.user)
             .select_related("user")
@@ -23,9 +27,18 @@ class LoanViewSet(viewsets.ModelViewSet):
 
     @transaction.atomic
     def perform_create(self, serializer):
+        """
+        1. Obtém o endereço IP do usuário a partir do request.
+        2. Salva o empréstimo associando-o ao usuário autenticado e ao IP.
+        3. Cria um log de auditoria com informações do empréstimo:
+        """
+        # 1
         ip = self.request.META.get("REMOTE_ADDR", "127.0.0.1")
+
+        # 2
         loan = serializer.save(user=self.request.user, ip_address=ip)
 
+        # 3
         log_loan_action(
             loan=loan,
             action=LoanActionEnum.CREATED,

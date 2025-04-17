@@ -27,12 +27,12 @@ class PaymentViewSet(viewsets.ModelViewSet):
         amount = serializer.validated_data["amount"]
         user = request.user
 
-        payment = ProcessPaymentUseCase(
+        payment = ProcessPaymentUseCase().handle(
             loan=loan,
             user=user,
             amount=amount,
             ip_address=request.META.get("REMOTE_ADDR", "127.0.0.1"),
-        ).handle()
+        )
 
         output_serializer = self.get_serializer(payment)
         return Response(output_serializer.data, status=status.HTTP_201_CREATED)

@@ -17,7 +17,6 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi --no-root
 
-# 👇 Copia e dá permissão ao entrypoint dentro da imagem
 COPY .docker/entrypoint.sh /app/.docker/entrypoint.sh
 RUN chmod +x /app/.docker/entrypoint.sh
 

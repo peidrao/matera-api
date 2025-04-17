@@ -11,7 +11,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("loans", "0002_historicalloan"),
         ("payments", "0001_initial"),

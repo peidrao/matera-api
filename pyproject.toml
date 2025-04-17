@@ -19,7 +19,8 @@ dependencies = [
     "djangorestframework-simplejwt (>=5.5.0,<6.0.0)",
     "drf-spectacular (>=0.28.0,<0.29.0)",
     "django-extensions (>=4.1,<5.0)",
-    "dj-database-url (>=2.3.0,<3.0.0)"
+    "dj-database-url (>=2.3.0,<3.0.0)",
+    "coverage (>=7.8.0,<8.0.0)"
 ]
 
 [tool.poetry.group.dev.dependencies]
